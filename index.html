@@ -1,0 +1,485 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{display:flex;flex-direction:column;align-items:center;gap:1.5rem;padding:1.5rem 0}
+.ntabs{display:flex;justify-content:center;gap:5px;flex-wrap:wrap}
+.ntab{padding:6px 12px;border:0.5px solid var(--color-border-secondary);border-radius:20px;font-size:11px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary)}
+.ntab.on{background:#2d6a2d;color:#fff;border-color:#2d6a2d}
+.phone{width:320px;height:620px;background:var(--color-background-primary);border-radius:36px;border:0.5px solid var(--color-border-secondary);overflow:hidden;position:relative}
+.pg{display:none;width:100%;height:100%;flex-direction:column;position:absolute;top:0;left:0}
+.pg.on{display:flex}
+.topbar{background:#2d6a2d;padding:16px 16px 12px;color:#fff;flex-shrink:0}
+.subtb{background:#2d6a2d;padding:12px 14px 10px;color:#fff;flex-shrink:0}
+.bk{font-size:11px;color:rgba(255,255,255,0.85);cursor:pointer;display:block;padding-bottom:5px}
+.swtitle{font-size:15px;font-weight:500;color:#fff}
+.tav{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff}
+.searchw{padding:10px 14px;border-bottom:0.5px solid var(--color-border-tertiary);flex-shrink:0}
+.sbox{display:flex;align-items:center;gap:8px;background:var(--color-background-secondary);border-radius:10px;padding:7px 12px}
+.sbox input{border:none;background:transparent;font-size:12px;flex:1;color:var(--color-text-primary);outline:none}
+.catrow{display:flex;gap:7px;padding:8px 14px;overflow-x:auto;flex-shrink:0}
+.catrow::-webkit-scrollbar{display:none}
+.ctag{padding:4px 11px;border-radius:16px;font-size:11px;white-space:nowrap;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:var(--color-background-primary)}
+.ctag.on{background:#2d6a2d;color:#fff;border-color:#2d6a2d}
+.sectitle{padding:8px 14px 4px;font-size:12px;font-weight:500;color:var(--color-text-secondary);flex-shrink:0}
+.cardlist{padding:0 14px 12px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.pcard{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;overflow:hidden;cursor:pointer;flex-shrink:0}
+.pcard-img{height:72px;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;font-size:28px}
+.pcard-body{padding:7px 10px}
+.pcard-name{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.pcard-meta{font-size:10px;color:var(--color-text-secondary);margin-top:2px}
+.pcard-row{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.pcard-price{font-size:12px;font-weight:500;color:#2d6a2d}
+.pcard-rating{font-size:10px;color:var(--color-text-secondary)}
+.botnav{display:flex;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);flex-shrink:0}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 0;gap:2px;cursor:pointer}
+.bnlbl{font-size:9px;color:var(--color-text-tertiary)}
+.bni.on .bnlbl{color:#2d6a2d;font-weight:500}
+.detimg{height:150px;display:flex;align-items:center;justify-content:center;font-size:52px;flex-shrink:0;background:var(--color-background-secondary)}
+.detbody{padding:12px 14px;overflow-y:auto;flex:1}
+.dettitle{font-size:16px;font-weight:500;color:var(--color-text-primary)}
+.detloc{font-size:11px;color:var(--color-text-secondary);margin-top:3px}
+.detprow{display:flex;align-items:baseline;gap:4px;margin-top:8px}
+.detprice{font-size:22px;font-weight:500;color:#2d6a2d}
+.detper{font-size:12px;color:var(--color-text-secondary)}
+.detrat{margin-left:auto;font-size:11px;color:var(--color-text-secondary)}
+.detdesc{font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin-top:8px}
+.ownerbox{display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px;background:var(--color-background-secondary);border-radius:10px}
+.ownerav{width:34px;height:34px;border-radius:50%;background:#2d6a2d;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.detbtns{display:flex;gap:8px;margin-top:12px;padding-bottom:12px}
+.gbtn{flex:1;padding:10px 0;border:none;border-radius:10px;background:#2d6a2d;color:#fff;font-size:13px;font-weight:500;cursor:pointer;text-align:center}
+.obtn{flex:0.45;padding:10px 0;border:1.5px solid #2d6a2d;border-radius:10px;background:transparent;color:#2d6a2d;font-size:13px;cursor:pointer;text-align:center}
+.fl{font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:4px}
+.fi{width:100%;padding:9px 10px;border:0.5px solid var(--color-border-secondary);border-radius:8px;font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none}
+.di{flex:1;padding:9px 10px;border:0.5px solid var(--color-border-secondary);border-radius:8px;font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none}
+.sumbox{background:var(--color-background-secondary);border-radius:10px;padding:12px}
+.sumrow{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;color:var(--color-text-secondary)}
+.sumrow.tot{font-weight:500;color:var(--color-text-primary);border-top:0.5px solid var(--color-border-tertiary);padding-top:8px;margin-top:4px}
+.chattb{background:#2d6a2d;padding:12px 14px 10px;color:#fff;flex-shrink:0;display:flex;align-items:center;gap:10px}
+.chatav{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff;flex-shrink:0}
+.chatmsgs{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;background:var(--color-background-secondary)}
+.msg{display:flex;flex-direction:column;max-width:78%}
+.msg.them{align-self:flex-start}
+.msg.me{align-self:flex-end}
+.mbbl{padding:8px 12px;border-radius:16px;font-size:12px;line-height:1.5}
+.msg.them .mbbl{background:var(--color-background-primary);color:var(--color-text-primary);border-bottom-left-radius:4px;border:0.5px solid var(--color-border-tertiary)}
+.msg.me .mbbl{background:#2d6a2d;color:#fff;border-bottom-right-radius:4px}
+.mtime{font-size:10px;color:var(--color-text-tertiary);margin-top:3px}
+.msg.me .mtime{text-align:right}
+.chatiw{padding:10px 14px;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);flex-shrink:0;display:flex;gap:8px;align-items:flex-end}
+.chatin{flex:1;padding:8px 12px;border:0.5px solid var(--color-border-secondary);border-radius:20px;font-size:12px;background:var(--color-background-secondary);color:var(--color-text-primary);outline:none;resize:none;max-height:80px;line-height:1.4}
+.csend{width:34px;height:34px;border-radius:50%;background:#2d6a2d;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chatib{margin:0 14px 10px;padding:8px 10px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:10px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.paymethod{display:flex;align-items:center;gap:12px;padding:12px;border:0.5px solid var(--color-border-tertiary);border-radius:10px;cursor:pointer;background:var(--color-background-primary)}
+.paymethod.on{border-color:#2d6a2d;background:#f0f8f0}
+.paymicon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--color-border-secondary);margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.radio.on{border-color:#2d6a2d;background:#2d6a2d}
+.radio.on::after{content:'';width:7px;height:7px;border-radius:50%;background:#fff;display:block}
+.cfinput{flex:1;padding:9px 10px;border:0.5px solid var(--color-border-secondary);border-radius:8px;font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none}
+.uplbox{height:90px;background:var(--color-background-secondary);border:1px dashed var(--color-border-secondary);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer}
+.catgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.catbtn{padding:7px 4px;border:0.5px solid var(--color-border-secondary);border-radius:8px;font-size:11px;text-align:center;cursor:pointer;color:var(--color-text-secondary);background:var(--color-background-primary)}
+.catbtn.on{background:#2d6a2d;color:#fff;border-color:#2d6a2d}
+.succpg{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;flex:1;gap:0}
+.succicon{font-size:56px;margin-bottom:12px}
+.succtitle{font-size:18px;font-weight:500;color:var(--color-text-primary);text-align:center;margin-bottom:6px}
+.succsub{font-size:12px;color:var(--color-text-secondary);text-align:center;line-height:1.6;margin-bottom:20px}
+.emailrow{display:flex;gap:8px;width:100%;margin-bottom:10px}
+.emailin{flex:1;padding:10px 12px;border:0.5px solid var(--color-border-secondary);border-radius:10px;font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none}
+.succdivider{width:100%;text-align:center;font-size:11px;color:var(--color-text-tertiary);margin:14px 0}
+.profhead{background:#2d6a2d;padding:24px 16px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0}
+.profav{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.25);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:500}
+.profstats{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);flex-shrink:0}
+.pstat{flex:1;text-align:center;padding:12px 0;border-right:0.5px solid var(--color-border-tertiary)}
+.pstat:last-child{border-right:none}
+.profmenu{overflow-y:auto;flex:1;padding:4px 0}
+.pitem{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary);cursor:pointer;font-size:13px}
+.greenbtn{width:100%;padding:11px 0;border:none;border-radius:10px;background:#2d6a2d;color:#fff;font-size:13px;font-weight:500;cursor:pointer}
+</style>
+
+<div class="wrap">
+<div class="ntabs">
+  <div class="ntab on" onclick="go('home')">Domov</div>
+  <div class="ntab" onclick="go('det-bicykel')">Bicykel</div>
+  <div class="ntab" onclick="go('det-lyze')">Lyže</div>
+  <div class="ntab" onclick="go('det-paddle')">Paddle</div>
+  <div class="ntab" onclick="go('det-kb')">Kettlebell</div>
+  <div class="ntab" onclick="go('det-tenis')">Tenis</div>
+  <div class="ntab" onclick="go('chat')">Chat</div>
+  <div class="ntab" onclick="go('booking')">Rezervácia</div>
+  <div class="ntab" onclick="go('payment')">Platba</div>
+  <div class="ntab" onclick="go('add')">Pridať</div>
+  <div class="ntab" onclick="go('profile')">Profil</div>
+</div>
+
+<div class="phone">
+
+<!-- HOME -->
+<div class="pg on" id="pg-home">
+  <div class="topbar">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div><div style="font-size:20px;font-weight:500">RentFit</div><div style="font-size:12px;opacity:0.8;margin-top:2px">Bratislava, SK</div></div>
+      <div class="tav">AM</div>
+    </div>
+  </div>
+  <div class="searchw">
+    <div class="sbox">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="opacity:0.4;flex-shrink:0"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Hľadaj vybavenie..."/>
+    </div>
+  </div>
+  <div class="catrow">
+    <div class="ctag on" data-cat="all">Všetko</div>
+    <div class="ctag" data-cat="cyklistika">Cyklistika</div>
+    <div class="ctag" data-cat="lyze">Lyže</div>
+    <div class="ctag" data-cat="fitness">Fitness</div>
+    <div class="ctag" data-cat="voda">Vodné športy</div>
+    <div class="ctag" data-cat="tenis">Tenis</div>
+  </div>
+  <div class="sectitle">Dostupné v okolí</div>
+  <div class="cardlist" id="cardlist">
+    <div class="pcard" data-cat="cyklistika" onclick="go('det-bicykel')">
+      <div class="pcard-img">🚲</div>
+      <div class="pcard-body">
+        <div class="pcard-name">Horský bicykel Trek</div>
+        <div class="pcard-meta">0.8 km · Petržalka</div>
+        <div class="pcard-row"><div class="pcard-price">4,50 € / deň</div><div class="pcard-rating">★ 4.9 (23)</div></div>
+      </div>
+    </div>
+    <div class="pcard" data-cat="lyze" onclick="go('det-lyze')">
+      <div class="pcard-img">⛷️</div>
+      <div class="pcard-body">
+        <div class="pcard-name">Lyžiarska súprava Rossignol</div>
+        <div class="pcard-meta">1.4 km · Staré Mesto</div>
+        <div class="pcard-row"><div class="pcard-price">12 € / deň</div><div class="pcard-rating">★ 4.7 (11)</div></div>
+      </div>
+    </div>
+    <div class="pcard" data-cat="voda" onclick="go('det-paddle')">
+      <div class="pcard-img">🏄</div>
+      <div class="pcard-body">
+        <div class="pcard-name">Paddleboard s pádlom</div>
+        <div class="pcard-meta">2.1 km · Ružinov</div>
+        <div class="pcard-row"><div class="pcard-price">8 € / deň</div><div class="pcard-rating">★ 5.0 (7)</div></div>
+      </div>
+    </div>
+    <div class="pcard" data-cat="fitness" onclick="go('det-kb')">
+      <div class="pcard-img">🏋️</div>
+      <div class="pcard-body">
+        <div class="pcard-name">Kettlebell set 8–24 kg</div>
+        <div class="pcard-meta">0.5 km · Nové Mesto</div>
+        <div class="pcard-row"><div class="pcard-price">3 € / deň</div><div class="pcard-rating">★ 4.8 (9)</div></div>
+      </div>
+    </div>
+    <div class="pcard" data-cat="tenis" onclick="go('det-tenis')">
+      <div class="pcard-img">🎾</div>
+      <div class="pcard-body">
+        <div class="pcard-name">Tenisová raketa Wilson Pro</div>
+        <div class="pcard-meta">1.1 km · Ružinov</div>
+        <div class="pcard-row"><div class="pcard-price">2 € / deň</div><div class="pcard-rating">★ 4.6 (15)</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="botnav">
+    <div class="bni on" onclick="go('home')"><span style="font-size:16px">🏠</span><span class="bnlbl">Domov</span></div>
+    <div class="bni" onclick="go('add')"><span style="font-size:16px">➕</span><span class="bnlbl">Pridať</span></div>
+    <div class="bni" onclick="go('profile')"><span style="font-size:16px">👤</span><span class="bnlbl">Profil</span></div>
+  </div>
+</div>
+
+<!-- DETAILS -->
+<div class="pg" id="pg-det-bicykel">
+  <div class="subtb"><span class="bk" onclick="go('home')">← Späť</span><div class="swtitle">Detail položky</div></div>
+  <div class="detimg">🚲</div>
+  <div class="detbody">
+    <div class="dettitle">Horský bicykel Trek Marlin 7</div><div class="detloc">📍 Petržalka · 0.8 km</div>
+    <div class="detprow"><div class="detprice">4,50 €</div><div class="detper">/ deň</div><div class="detrat">★ 4.9 (23)</div></div>
+    <div class="detdesc">Kvalitný horský bicykel na turistiku aj mestskú jazdu. Veľkosť rámu M, 29" kolesá. Vrátane zámky a pumpy.</div>
+    <div class="ownerbox"><div class="ownerav">MN</div><div><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">Marek Novák</div><div style="font-size:10px;color:var(--color-text-secondary)">Člen od 2024 · 98% hodnotení</div></div></div>
+    <div class="detbtns"><div class="obtn" onclick="openChat('MN','Marek Novák','🚲','Horský bicykel Trek Marlin 7','4,50 € / deň','det-bicykel')">Správa</div><div class="gbtn" onclick="openBooking('det-bicykel','🚲','Horský bicykel Trek Marlin 7',4.50)">Rezervovať</div></div>
+  </div>
+  <div class="botnav"><div class="bni" onclick="go('home')"><span style="font-size:16px">🏠</span><span class="bnlbl">Domov</span></div><div class="bni" onclick="go('add')"><span style="font-size:16px">➕</span><span class="bnlbl">Pridať</span></div><div class="bni" onclick="go('profile')"><span style="font-size:16px">👤</span><span class="bnlbl">Profil</span></div></div>
+</div>
+
+<div class="pg" id="pg-det-lyze">
+  <div class="subtb"><span class="bk" onclick="go('home')">← Späť</span><div class="swtitle">Detail položky</div></div>
+  <div class="detimg">⛷️</div>
+  <div class="detbody">
+    <div class="dettitle">Lyžiarska súprava Rossignol</div><div class="detloc">📍 Staré Mesto · 1.4 km</div>
+    <div class="detprow"><div class="detprice">12 €</div><div class="detper">/ deň</div><div class="detrat">★ 4.7 (11)</div></div>
+    <div class="detdesc">Kompletná lyžiarska súprava vrátane lyží, palíc a topánok. Veľkosť topánok 42, dĺžka lyží 170 cm.</div>
+    <div class="ownerbox"><div class="ownerav">JP</div><div><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">Jana Procházková</div><div style="font-size:10px;color:var(--color-text-secondary)">Člen od 2023 · 95% hodnotení</div></div></div>
+    <div class="detbtns"><div class="obtn" onclick="openChat('JP','Jana Procházková','⛷️','Lyžiarska súprava Rossignol','12 € / deň','det-lyze')">Správa</div><div class="gbtn" onclick="openBooking('det-lyze','⛷️','Lyžiarska súprava Rossignol',12)">Rezervovať</div></div>
+  </div>
+  <div class="botnav"><div class="bni" onclick="go('home')"><span style="font-size:16px">🏠</span><span class="bnlbl">Domov</span></div><div class="bni" onclick="go('add')"><span style="font-size:16px">➕</span><span class="bnlbl">Pridať</span></div><div class="bni" onclick="go('profile')"><span style="font-size:16px">👤</span><span class="bnlbl">Profil</span></div></div>
+</div>
+
+<div class="pg" id="pg-det-paddle">
+  <div class="subtb"><span class="bk" onclick="go('home')">← Späť</span><div class="swtitle">Detail položky</div></div>
+  <div class="detimg">🏄</div>
+  <div class="detbody">
+    <div class="dettitle">Paddleboard s pádlom</div><div class="detloc">📍 Ružinov · 2.1 km</div>
+    <div class="detprow"><div class="detprice">8 €</div><div class="detper">/ deň</div><div class="detrat">★ 5.0 (7)</div></div>
+    <div class="detdesc">Nafukovací paddleboard 10'6", nosnosť 120 kg. Vrátane pádla, pumpy a transportného vaku.</div>
+    <div class="ownerbox"><div class="ownerav">TK</div><div><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">Tomáš Kováč</div><div style="font-size:10px;color:var(--color-text-secondary)">Člen od 2025 · 100% hodnotení</div></div></div>
+    <div class="detbtns"><div class="obtn" onclick="openChat('TK','Tomáš Kováč','🏄','Paddleboard s pádlom','8 € / deň','det-paddle')">Správa</div><div class="gbtn" onclick="openBooking('det-paddle','🏄','Paddleboard s pádlom',8)">Rezervovať</div></div>
+  </div>
+  <div class="botnav"><div class="bni" onclick="go('home')"><span style="font-size:16px">🏠</span><span class="bnlbl">Domov</span></div><div class="bni" onclick="go('add')"><span style="font-size:16px">➕</span><span class="bnlbl">Pridať</span></div><div class="bni" onclick="go('profile')"><span style="font-size:16px">👤</span><span class="bnlbl">Profil</span></div></div>
+</div>
+
+<div class="pg" id="pg-det-kb">
+  <div class="subtb"><span class="bk" onclick="go('home')">← Späť</span><div class="swtitle">Detail položky</div></div>
+  <div class="detimg">🏋️</div>
+  <div class="detbody">
+    <div class="dettitle">Kettlebell set 8–24 kg</div><div class="detloc">📍 Nové Mesto · 0.5 km</div>
+    <div class="detprow"><div class="detprice">3 €</div><div class="detper">/ deň</div><div class="detrat">★ 4.8 (9)</div></div>
+    <div class="detdesc">Sada 4 kettlebells – 8, 12, 16 a 24 kg. Liatinové so silikónovým povrchom. Vhodné pre domáci tréning.</div>
+    <div class="ownerbox"><div class="ownerav">LH</div><div><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">Lucia Horáková</div><div style="font-size:10px;color:var(--color-text-secondary)">Člen od 2024 · 97% hodnotení</div></div></div>
+    <div class="detbtns"><div class="obtn" onclick="openChat('LH','Lucia Horáková','🏋️','Kettlebell set 8–24 kg','3 € / deň','det-kb')">Správa</div><div class="gbtn" onclick="openBooking('det-kb','🏋️','Kettlebell set 8–24 kg',3)">Rezervovať</div></div>
+  </div>
+  <div class="botnav"><div class="bni" onclick="go('home')"><span style="font-size:16px">🏠</span><span class="bnlbl">Domov</span></div><div class="bni" onclick="go('add')"><span style="font-size:16px">➕</span><span class="bnlbl">Pridať</span></div><div class="bni" onclick="go('profile')"><span style="font-size:16px">👤</span><span class="bnlbl">Profil</span></div></div>
+</div>
+
+<div class="pg" id="pg-det-tenis">
+  <div class="subtb"><span class="bk" onclick="go('home')">← Späť</span><div class="swtitle">Detail položky</div></div>
+  <div class="detimg">🎾</div>
+  <div class="detbody">
+    <div class="dettitle">Tenisová raketa Wilson Pro Staff</div><div class="detloc">📍 Ružinov · 1.1 km</div>
+    <div class="detprow"><div class="detprice">2 €</div><div class="detper">/ deň</div><div class="detrat">★ 4.6 (15)</div></div>
+    <div class="detdesc">Profesionálna tenisová raketa Wilson Pro Staff 97. Grip L3, 315g. Vrátane obalu.</div>
+    <div class="ownerbox"><div class="ownerav">RS</div><div><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">Rastislav Sloboda</div><div style="font-size:10px;color:var(--color-text-secondary)">Člen od 2025 · 93% hodnotení</div></div></div>
+    <div class="detbtns"><div class="obtn" onclick="openChat('RS','Rastislav Sloboda','🎾','Tenisová raketa Wilson Pro Staff','2 € / deň','det-tenis')">Správa</div><div class="gbtn" onclick="openBooking('det-tenis','🎾','Tenisová raketa Wilson Pro Staff',2)">Rezervovať</div></div>
+  </div>
+  <div class="botnav"><div class="bni" onclick="go('home')"><span style="font-size:16px">🏠</span><span class="bnlbl">Domov</span></div><div class="bni" onclick="go('add')"><span style="font-size:16px">➕</span><span class="bnlbl">Pridať</span></div><div class="bni" onclick="go('profile')"><span style="font-size:16px">👤</span><span class="bnlbl">Profil</span></div></div>
+</div>
+
+<!-- CHAT -->
+<div class="pg" id="pg-chat">
+  <div class="chattb"><div style="font-size:11px;color:rgba(255,255,255,0.85);cursor:pointer" id="chatback">← Späť</div><div class="chatav" id="chatav">MN</div><div><div style="font-size:13px;font-weight:500;color:#fff" id="chaton">Marek Novák</div><div style="font-size:10px;color:rgba(255,255,255,0.75)" id="chatoi">🚲 Horský bicykel Trek</div></div></div>
+  <div class="chatib"><div style="font-size:20px" id="chatie">🚲</div><div><div style="font-size:11px;font-weight:500;color:var(--color-text-primary)" id="chatin2">Horský bicykel Trek</div><div style="font-size:10px;color:var(--color-text-secondary)" id="chatip">4,50 € / deň</div></div></div>
+  <div class="chatmsgs" id="chatmsgs"></div>
+  <div class="chatiw"><textarea class="chatin" id="chatin" placeholder="Napíš správu..." rows="1"></textarea><button class="csend" onclick="sendMsg()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8L14 2L8 14L7 9L2 8Z" fill="white"/></svg></button></div>
+</div>
+
+<!-- BOOKING -->
+<div class="pg" id="pg-booking">
+  <div class="subtb"><span class="bk" id="bookback">← Späť</span><div class="swtitle">Rezervácia</div></div>
+  <div style="padding:14px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;flex:1">
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--color-background-secondary);border-radius:10px">
+      <div style="font-size:24px" id="bookemoji">🚲</div>
+      <div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary)" id="bookname">Horský bicykel Trek</div><div style="font-size:12px;color:var(--color-text-secondary)" id="bookpricelbl">4,50 € / deň</div></div>
+    </div>
+    <div><label class="fl">Dátum prenájmu</label><div style="display:flex;gap:8px"><input type="date" id="dfrom" value="2026-05-10" class="di"><input type="date" id="dto" value="2026-05-12" class="di"></div></div>
+    <div class="sumbox">
+      <div class="sumrow"><span id="sdl">4,50 € × 2 dni</span><span id="sbase">9,00 €</span></div>
+      <div class="sumrow"><span>Poplatok RentFit (10 %)</span><span id="sfee">0,90 €</span></div>
+      <div class="sumrow tot"><span>Celkovo</span><span id="stot">9,90 €</span></div>
+    </div>
+    <button class="greenbtn" id="topaybtn">Pokračovať k platbe</button>
+  </div>
+</div>
+
+<!-- PAYMENT -->
+<div class="pg" id="pg-payment">
+  <div class="subtb"><span class="bk" onclick="go('booking')">← Späť</span><div class="swtitle">Spôsob platby</div></div>
+  <div style="padding:14px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;flex:1">
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--color-background-secondary);border-radius:10px">
+      <div style="font-size:20px" id="payemoji">🚲</div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)" id="payname">Horský bicykel Trek</div><div style="font-size:11px;color:var(--color-text-secondary)" id="paytotal">Celkovo: 9,90 €</div></div>
+    </div>
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary)">Vyber spôsob platby</div>
+    <div class="paymethod on" id="pm-card" onclick="selPay('card')"><div class="paymicon" style="background:#f0f4ff">💳</div><div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Platobná karta</div><div style="font-size:11px;color:var(--color-text-secondary)">Visa, Mastercard, Maestro</div></div><div class="radio on" id="r-card"></div></div>
+    <div class="paymethod" id="pm-apple" onclick="selPay('apple')"><div class="paymicon" style="background:#f5f5f5">🍎</div><div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Apple Pay</div><div style="font-size:11px;color:var(--color-text-secondary)">Rýchla platba</div></div><div class="radio" id="r-apple"></div></div>
+    <div class="paymethod" id="pm-google" onclick="selPay('google')"><div class="paymicon" style="background:#fff8f0">🔵</div><div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Google Pay</div><div style="font-size:11px;color:var(--color-text-secondary)">Rýchla platba</div></div><div class="radio" id="r-google"></div></div>
+    <div id="cardfields" style="display:flex;flex-direction:column;gap:8px">
+      <div><label class="fl">Číslo karty</label><input class="cfinput" style="width:100%" placeholder="1234 5678 9012 3456"></div>
+      <div style="display:flex;gap:8px"><div style="flex:1"><label class="fl">Platnosť</label><input class="cfinput" placeholder="MM/RR"></div><div style="flex:1"><label class="fl">CVV</label><input class="cfinput" placeholder="123"></div></div>
+      <div><label class="fl">Meno na karte</label><input class="cfinput" style="width:100%" placeholder="Adam Menyhart"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--color-text-secondary)"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 4v4c0 3.5 2.5 6.5 6 7.5C11.5 14.5 14 11.5 14 8V4L8 1z" stroke="#2d6a2d" stroke-width="1.5" fill="none"/></svg>Platba zabezpečená SSL</div>
+    <button class="greenbtn" onclick="go('paid')">Zaplatiť <span id="paybtnamt">9,90 €</span></button>
+  </div>
+</div>
+
+<!-- ADD -->
+<div class="pg" id="pg-add">
+  <div class="subtb"><div class="swtitle">Nový inzerát</div><div style="font-size:11px;color:rgba(255,255,255,0.75);margin-top:3px">Zdieľaj svoje vybavenie</div></div>
+  <div style="padding:14px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;flex:1">
+    <div class="uplbox"><div style="font-size:24px">📷</div><div style="font-size:12px;color:var(--color-text-secondary)">Pridaj fotky vybavenia</div></div>
+    <div><label class="fl">Názov vybavenia</label><input class="fi" type="text" placeholder="Napr. Horský bicykel Trek Marlin"/></div>
+    <div><label class="fl">Kategória</label><div class="catgrid"><div class="catbtn on" onclick="selCB(this)">🚲 Cyklistika</div><div class="catbtn" onclick="selCB(this)">⛷️ Lyže</div><div class="catbtn" onclick="selCB(this)">🏄 Vodné</div><div class="catbtn" onclick="selCB(this)">💪 Fitness</div><div class="catbtn" onclick="selCB(this)">🎾 Tenis</div><div class="catbtn" onclick="selCB(this)">⛺ Camping</div></div></div>
+    <div style="display:flex;gap:8px"><div style="flex:1"><label class="fl">Cena za deň (€)</label><input class="fi" type="number" placeholder="0,00"/></div><div style="flex:1"><label class="fl">Lokalita</label><input class="fi" type="text" placeholder="Bratislava"/></div></div>
+    <div><label class="fl">Popis</label><textarea class="fi" rows="3" placeholder="Stav, veľkosť, čo je v cene..." style="resize:none"></textarea></div>
+    <button class="greenbtn">Zverejniť inzerát</button>
+  </div>
+  <div class="botnav"><div class="bni" onclick="go('home')"><span style="font-size:16px">🏠</span><span class="bnlbl">Domov</span></div><div class="bni on" onclick="go('add')"><span style="font-size:16px">➕</span><span class="bnlbl">Pridať</span></div><div class="bni" onclick="go('profile')"><span style="font-size:16px">👤</span><span class="bnlbl">Profil</span></div></div>
+</div>
+
+<!-- PROFILE -->
+<div class="pg" id="pg-profile">
+  <div class="profhead"><div class="profav">AM</div><div style="color:#fff;font-size:16px;font-weight:500">Adam Menyhart</div><div style="color:rgba(255,255,255,0.75);font-size:12px">Člen od januára 2026</div></div>
+  <div class="profstats">
+    <div class="pstat"><div style="font-size:17px;font-weight:500;color:var(--color-text-primary)">3</div><div style="font-size:11px;color:var(--color-text-secondary)">Inzeráty</div></div>
+    <div class="pstat"><div style="font-size:17px;font-weight:500;color:var(--color-text-primary)">12</div><div style="font-size:11px;color:var(--color-text-secondary)">Prenájmy</div></div>
+    <div class="pstat"><div style="font-size:17px;font-weight:500;color:var(--color-text-primary)">4.8★</div><div style="font-size:11px;color:var(--color-text-secondary)">Hodnotenie</div></div>
+  </div>
+  <div class="profmenu">
+    <div class="pitem"><span style="color:var(--color-text-primary)">Moje inzeráty</span><span style="font-size:12px;color:var(--color-text-secondary)">3 aktívne →</span></div>
+    <div class="pitem"><span style="color:var(--color-text-primary)">História prenájmov</span><span style="font-size:12px;color:var(--color-text-secondary)">12 →</span></div>
+    <div class="pitem"><span style="color:var(--color-text-primary)">Zárobky</span><span style="font-size:12px;color:var(--color-text-secondary)">34,20 € →</span></div>
+    <div class="pitem"><span style="color:var(--color-text-primary)">Správy</span><span style="font-size:12px;color:var(--color-text-secondary)">2 neprečítané →</span></div>
+    <div class="pitem"><span style="color:var(--color-text-primary)">Platobné údaje</span><span style="font-size:12px;color:var(--color-text-secondary)">Nastaviť →</span></div>
+    <div class="pitem"><span style="color:var(--color-text-primary)">Nastavenia</span><span style="font-size:12px;color:var(--color-text-secondary)">→</span></div>
+  </div>
+  <div class="botnav"><div class="bni" onclick="go('home')"><span style="font-size:16px">🏠</span><span class="bnlbl">Domov</span></div><div class="bni" onclick="go('add')"><span style="font-size:16px">➕</span><span class="bnlbl">Pridať</span></div><div class="bni on" onclick="go('profile')"><span style="font-size:16px">👤</span><span class="bnlbl">Profil</span></div></div>
+</div>
+<!-- SUCCESS -->
+<div class="pg" id="pg-success">
+  <div class="subtb"><div class="swtitle">Záujem zaznamenaný</div></div>
+  <div class="succpg">
+    <div class="succicon">🎉</div>
+    <div class="succtitle">Ďakujeme za záujem!</div>
+    <div class="succsub">Appka je zatiaľ v beta verzii – dáme ti vedieť, keď spustíme ostro.</div>
+    <div style="width:100%">
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px">Zanechaj email a budeš prvý, kto sa dozvie:</div>
+      <div class="emailrow">
+        <input class="emailin" id="emailinput" type="email" placeholder="tvoj@email.com"/>
+        <button class="gbtn" style="flex:0 0 auto;padding:10px 14px" onclick="submitEmail()">OK</button>
+      </div>
+      <div id="emailthanks" style="display:none;font-size:12px;color:#2d6a2d;text-align:center;padding:6px 0">✓ Super, ozveme sa ti!</div>
+    </div>
+    <div class="succdivider">— alebo —</div>
+    <button class="greenbtn" id="demobtn" style="margin-bottom:8px">Pokračovať v demo rezervácii</button>
+    <button class="obtn" style="width:100%;flex:none" onclick="go('home')">Späť na úvod</button>
+  </div>
+</div>
+
+<!-- PAID -->
+<div class="pg" id="pg-paid">
+  <div class="subtb"><div class="swtitle">Platba</div></div>
+  <div class="succpg">
+    <div class="succicon">✅</div>
+    <div class="succtitle">Platba prebehla úspešne!</div>
+    <div class="succsub">Tvoja rezervácia je potvrdená.<br>Prenajímateľ ťa bude kontaktovať s detailmi odovzdania.</div>
+    <button class="greenbtn" onclick="go('home')">Späť na úvod</button>
+  </div>
+</div>
+
+</div></div>
+
+<script>
+var bookFrom='home', chatFrom='home', curP=4.50;
+
+function go(name){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  var el=document.getElementById('pg-'+name);
+  if(el){el.classList.add('on');el.scrollTop=0;}
+  var names=['home','det-bicykel','det-lyze','det-paddle','det-kb','det-tenis','chat','booking','payment','add','profile','success','paid'];
+  document.querySelectorAll('.ntab').forEach(function(t,i){t.classList.toggle('on',names[i]===name);});
+}
+
+function openBooking(from,emoji,name,price){
+  bookFrom=from; curP=price;
+  document.getElementById('bookemoji').textContent=emoji;
+  document.getElementById('bookname').textContent=name;
+  document.getElementById('bookpricelbl').textContent=price.toFixed(2)+' € / deň';
+  document.getElementById('bookback').onclick=function(){go(bookFrom);};
+  recalc(price);
+  document.getElementById('dfrom').onchange=function(){recalc(curP);};
+  document.getElementById('dto').onchange=function(){recalc(curP);};
+  var btn=document.getElementById('topaybtn');
+  btn.onclick=function(){
+    document.getElementById('payemoji').textContent=emoji;
+    document.getElementById('payname').textContent=name;
+    var t=document.getElementById('stot').textContent;
+    document.getElementById('paytotal').textContent='Celkovo: '+t;
+    document.getElementById('paybtnamt').textContent=t;
+    go('payment');
+  };
+  // reset email field každý raz
+  document.getElementById('emailinput').value='';
+  document.getElementById('emailinput').style.display='';
+  document.querySelector('#pg-success .emailrow .gbtn').style.display='';
+  document.getElementById('emailthanks').style.display='none';
+  document.getElementById('demobtn').onclick=function(){go('booking');};
+  go('success');
+}
+
+function recalc(ppd){
+  var f=new Date(document.getElementById('dfrom').value);
+  var t=new Date(document.getElementById('dto').value);
+  var d=Math.max(1,Math.round((t-f)/(1000*60*60*24)));
+  var base=ppd*d, fee=base*0.1, total=base+fee;
+  document.getElementById('sdl').textContent=ppd.toFixed(2)+' € × '+d+' '+(d===1?'deň':'dni');
+  document.getElementById('sbase').textContent=base.toFixed(2)+' €';
+  document.getElementById('sfee').textContent=fee.toFixed(2)+' €';
+  document.getElementById('stot').textContent=total.toFixed(2)+' €';
+}
+
+function openChat(init,name,emoji,item,price,from){
+  chatFrom=from;
+  document.getElementById('chatav').textContent=init;
+  document.getElementById('chaton').textContent=name;
+  document.getElementById('chatoi').textContent=emoji+' '+item;
+  document.getElementById('chatie').textContent=emoji;
+  document.getElementById('chatin2').textContent=item;
+  document.getElementById('chatip').textContent=price;
+  document.getElementById('chatback').onclick=function(){go(chatFrom);};
+  var msgs=document.getElementById('chatmsgs');
+  msgs.innerHTML='<div class="msg them"><div class="mbbl">Ahoj! Mám záujem o '+item.toLowerCase()+'. Je dostupný cez víkend?</div><div class="mtime">AM · 14:32</div></div><div class="msg me"><div class="mbbl">Ahoj! Áno, je voľný. Môžeš si ho vyzdvihnúť v piatok od 18:00.</div><div class="mtime">14:35</div></div>';
+  go('chat');
+  setTimeout(function(){msgs.scrollTop=msgs.scrollHeight;},50);
+}
+
+function sendMsg(){
+  var inp=document.getElementById('chatin');
+  var txt=inp.value.trim(); if(!txt)return;
+  var msgs=document.getElementById('chatmsgs');
+  var now=new Date(), time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  var d=document.createElement('div'); d.className='msg them';
+  d.innerHTML='<div class="mbbl">'+txt+'</div><div class="mtime">AM · '+time+'</div>';
+  msgs.appendChild(d); inp.value=''; inp.style.height='auto';
+  setTimeout(function(){msgs.scrollTop=msgs.scrollHeight;},50);
+  setTimeout(function(){
+    var r=document.createElement('div'); r.className='msg me';
+    r.innerHTML='<div class="mbbl">Ďakujem za správu, odpoviem čo najskôr!</div><div class="mtime">'+time+'</div>';
+    msgs.appendChild(r); setTimeout(function(){msgs.scrollTop=msgs.scrollHeight;},50);
+  },1200);
+}
+
+function selPay(m){
+  ['card','apple','google'].forEach(function(x){
+    document.getElementById('pm-'+x).classList.toggle('on',x===m);
+    document.getElementById('r-'+x).classList.toggle('on',x===m);
+  });
+  document.getElementById('cardfields').style.display=m==='card'?'flex':'none';
+  document.getElementById('cardfields').style.flexDirection='column';
+}
+
+function selCB(el){
+  document.querySelectorAll('.catbtn').forEach(function(x){x.classList.remove('on');});
+  el.classList.add('on');
+}
+
+document.querySelectorAll('.ctag').forEach(function(c){
+  c.addEventListener('click',function(){
+    document.querySelectorAll('.ctag').forEach(function(x){x.classList.remove('on');});
+    this.classList.add('on');
+    var sel=this.dataset.cat;
+    document.querySelectorAll('#cardlist .pcard').forEach(function(card){
+      card.style.display=(sel==='all'||card.dataset.cat===sel)?'block':'none';
+    });
+  });
+});
+
+function submitEmail(){
+  var val=document.getElementById('emailinput').value.trim();
+  if(!val)return;
+  document.getElementById('emailinput').style.display='none';
+  document.querySelector('#pg-success .emailrow .gbtn').style.display='none';
+  document.getElementById('emailthanks').style.display='block';
+  console.log('Email zachyteny:', val);
+}
+
+document.getElementById('chatin').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px';});
+document.getElementById('chatin').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+</script>
